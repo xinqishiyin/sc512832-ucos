@@ -1,0 +1,1 @@
+"DRIVES\lcd_drive.c" LARGE OPTIMIZE (6,SPEED) BROWSE INCDIR(.\OS;.\APP;.\USER;.\SYS;.\DRIVES) DEBUG OBJECTEXTEND PRINT(.\lcd_drive.lst) TABS (2) OBJECT(lcd_drive.obj)

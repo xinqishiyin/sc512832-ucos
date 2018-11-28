@@ -1,0 +1,46 @@
+C51 COMPILER V9.52.0.0   MAIN                                                              11/28/2018 11:29:41 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE USER\main.c LARGE OPTIMIZE(6,SPEED) BROWSE INCDIR(.\OS;.\APP;.\USER;.\SYS;.
+                    -\DRIVES) DEBUG OBJECTEXTEND PRINT(.\main.lst) TABS(2) OBJECT(main.obj)
+
+line level    source
+
+   1          #include "includes.h"
+   2          
+   3          
+   4          
+   5          
+   6          
+   7          
+   8          
+   9          void main()
+  10          {
+  11   1        systemCLK_init(CLK_RCH,0,MCLKDIV1);     //使用内部4M 时钟，非PLL时钟，不分频
+  12   1        
+  13   1        OSInit();   
+  14   1        OSTaskCreate(Task1,Task_1,TASK_1); 
+  15   1        OSTaskCreate(Task2,Task_2,TASK_2); 
+  16   1        OSTaskCreate(Task3,Task_3,TASK_3); 
+  17   1        OSTaskCreate(Task4,Task_4,TASK_4); 
+  18   1        OSTaskCreate(Task5,Task_5,TASK_5); 
+  19   1        OSStart();
+  20   1        
+  21   1      }
+  22          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    149    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

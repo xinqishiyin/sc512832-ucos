@@ -1,0 +1,80 @@
+C51 COMPILER V9.52.0.0   SYSTEM                                                            11/28/2018 11:29:44 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE SYSTEM
+OBJECT MODULE PLACED IN system.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE SYS\system.c LARGE OPTIMIZE(6,SPEED) BROWSE INCDIR(.\OS;.\APP;.\USER;.\SYS;
+                    -.\DRIVES) DEBUG OBJECTEXTEND PRINT(.\system.lst) TABS(2) OBJECT(system.obj)
+
+line level    source
+
+   1          #define _SYSTEM_FLAG
+   2          #include "includes.h"
+   3          
+   4          /*
+   5          * -------------------------------------------------------------------------
+   6          * 函数：systemCLK_init  系统时钟选择  
+   7          * 参数：clktype ：系统时钟源
+   8          *       plltype ： 选择PLL为时钟源时，选择频率
+   9          *       clkdiv  ： 系统时钟分频比
+  10          * 返回值：无
+  11          * --------------------------------------------------------------------------
+  12          */
+  13          void systemCLK_init(SYSCLK_ENUM clktype,PLL_ENUM plltype,CLK_DIV clkdiv)
+  14          {
+  15   1        WPKEY = 0x37;                          //写入时钟数据需先写一次锁键
+  16   1        switch(clktype)
+  17   1        {
+  18   2          case CLK_RCL:
+  19   2            CLKEN |= 0x02;                  // 打开RCL
+  20   2            while((MCKSEL&0x10) != 0x10);   // 查看RCL稳定标志位是否置起
+  21   2          break;
+  22   2          case CLK_RCH:
+  23   2            CLKEN |= 0x01;                  // 打开RCH
+  24   2      //      while((MCKSEL&0x08) != 0x08);   // 查看RCH稳定标志位是否置起
+  25   2          break;
+  26   2          case CLK_CRYH:
+  27   2            CLKEN &= 0xFB;                 // P90，P91复用成晶振输入脚
+  28   2            CLKEN |= 0x08;                // 打开CRYH
+  29   2        //    while((MCKSEL&0x40) != 0x40);  // 查看CRYH稳定标志位是否置起
+  30   2          break;
+  31   2          case CLK_CRYL:
+  32   2            CLKEN |= 0x10;                // 打开CRYL
+  33   2          break;
+  34   2          case CLK_PLLCKO:      
+  35   2            CLKEN |= 0x10;                  // 时钟源打开CRYL
+  36   2            switch(plltype)
+  37   2            {
+  38   3              case PLL_2M: PLLCON|=0x01;  break;
+  39   3              case PLL_4M: PLLCON|=0x00;  break;
+  40   3              case PLL_8M: PLLCON|=0x02;  break;
+  41   3              case PLL_12M: PLLCON|=0x03; break;
+  42   3            }   
+  43   2            while((PLLCON&0x10) != 0x10);   // 查看PLL稳定标志位是否置起
+  44   2          break;
+  45   2        }
+  46   1        WPKEY = 0x37;
+  47   1        switch(clkdiv)
+  48   1        {
+  49   2          case MCLKDIV1: MCKDIV = 0x03; break;
+  50   2          case MCLKDIV2: MCKDIV = 0x00; break;
+  51   2          case MCLKDIV4: MCKDIV = 0x01; break;
+  52   2          case MCLKDIV8: MCKDIV = 0x02; break;
+  53   2        }
+  54   1      }
+C51 COMPILER V9.52.0.0   SYSTEM                                                            11/28/2018 11:29:44 PAGE 2   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    120    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

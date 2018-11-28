@@ -1,0 +1,76 @@
+C51 COMPILER V9.52.0.0   LCD_DRIVE                                                         11/28/2018 11:29:46 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE LCD_DRIVE
+OBJECT MODULE PLACED IN lcd_drive.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE DRIVES\lcd_drive.c LARGE OPTIMIZE(6,SPEED) BROWSE INCDIR(.\OS;.\APP;.\USER;
+                    -.\SYS;.\DRIVES) DEBUG OBJECTEXTEND PRINT(.\lcd_drive.lst) TABS(2) OBJECT(lcd_drive.obj)
+
+line level    source
+
+   1          #include "includes.h"
+   2          
+   3          #if LCD_ENABLE > 0
+              
+              
+              
+              
+              /*
+              * -------------------------------------------------------------------------
+              * 函数：LCD_Init  启用LCD驱动模块并初使化  LCD_Init(COM4,SEG8,FRE_256HZ,BIAS_12,RATIO1,CAPACITY1);
+              * 参数：com_num ： 使用COM口个数 1-4
+              *       seg_num ： 使用SEG个数 0-31
+              *       scan_fre： 扫描频率 1025Hz 512Hz 256Hz 128Hz
+              *       bias_lev： 偏置电平 1/2 1/3
+              *       ratio   ： 对比度  越小 对比度越高
+              *       capacity： 驱动能力 越小 驱动能力越强
+              * 返回值：无
+              * --------------------------------------------------------------------------
+              */
+              void LCD_Init(LCD_COM_ENUM com_num,LCD_SEG_NUM seg_num,LCD_SCAN_FRE scan_fre,LCD_BIAS_LEVEL bias_lev ,LCD_
+             -CONTRAST_RATIO ratio ,LCD_DRIVING_CAPACITY capacity)
+              {
+                WPKEY = 0x37;
+                xSYSCFG|=0x30;                //开启RCT时钟用于LCD
+                WPKEY = 0x37;
+                RTCSEL = 0x04;
+                RTCDATA|=0x01;
+                xLCDPEN0 |= (segserch[com_num+1] << 4);                                               /* P34-P37复用为LCD COM       */
+                if(seg_num > 0)   xLCDPEN1 = (seg_num > 6? 0xff : segserch[seg_num + 1]);           /* P00-P07复用为LCD SEG 0-7
+             -    */
+                if(seg_num > 7)   xLCDPEN2 = ((seg_num - 7)  > 7 ? 0xff : segserch[seg_num - 7]);   /* P40-P47复用为LCD SEG
+             - 8-15    */
+                if(seg_num > 15)  xLCDPEN3 = ((seg_num - 15) > 7 ? 0xff : segserch[seg_num - 15]);  /* P10-P17复用为LCD SE
+             -G 16-23  */
+                if(seg_num > 23)  xLCDPEN4 = ((seg_num - 23) > 7 ? 0xff : segserch[seg_num - 23]);  /* P10-P17复用为LCD SEG
+             - 24-31  */
+                
+                xLCDCON  =  0x80 | scan_fre<<4 | bias_lev<<2 | com_num; //0x97;       //bit0 1:四个COM口   bit2:偏置1/3 4
+             -电平  bit4 5:LCD扫描频率为256HZ  bit7:LCD模块开启
+              
+                //xTKADDR0=0;
+                //TKCON=？  TKADDR=? 闪烁控制
+                xLCDPCON=ratio<<2 | capacity;       //对比度和驱动能力
+              }
+              
+              
+              
+              
+              
+              #endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+C51 COMPILER V9.52.0.0   LCD_DRIVE                                                         11/28/2018 11:29:46 PAGE 2   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

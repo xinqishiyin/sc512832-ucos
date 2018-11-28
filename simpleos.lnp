@@ -1,0 +1,10 @@
+"os_cpu.obj",
+"STARTUPfor2832.obj",
+"OS_CPU_A.obj",
+"main.obj",
+"os_task.obj",
+"system.obj",
+"lcd_drive.obj" 
+TO "simpleos" 
+RAMSIZE(256) 
+DISABLEWARNING (16) 

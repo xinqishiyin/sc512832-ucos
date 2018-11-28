@@ -1,0 +1,10 @@
+[core]
+	bare = true
+	repositoryformatversion = 0
+	filemode = false
+	symlinks = false
+	ignorecase = true
+[remote "sc512832-ucos"]
+	url = https://github.com/xinqishiyin/sc512832-ucos.git
+	fetch = +refs/heads/*:refs/remotes/sc512832-ucos/*
+	pushurl = https://github.com/xinqishiyin/sc512832-ucos.git
